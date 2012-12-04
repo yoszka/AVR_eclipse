@@ -30,56 +30,56 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LSS += \
-Krok.lss \
+Serwo.lss \
 
 FLASH_IMAGE += \
-Krok.hex \
+Serwo.hex \
 
 EEPROM_IMAGE += \
-Krok.eep \
+Serwo.eep \
 
 SIZEDUMMY += \
 sizedummy \
 
 
 # All Target
-all: Krok.elf secondary-outputs
+all: Serwo.elf secondary-outputs
 
 # Tool invocations
-Krok.elf: $(OBJS) $(USER_OBJS)
+Serwo.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR C Linker'
-	avr-gcc -Wl,-Map,Krok.map -mmcu=atmega8 -o "Krok.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	avr-gcc -Wl,-Map,Serwo.map -mmcu=atmega8 -o "Serwo.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Krok.lss: Krok.elf
+Serwo.lss: Serwo.elf
 	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S Krok.elf  >"Krok.lss"
+	-avr-objdump -h -S Serwo.elf  >"Serwo.lss"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Krok.hex: Krok.elf
+Serwo.hex: Serwo.elf
 	@echo 'Create Flash image (ihex format)'
-	-avr-objcopy -R .eeprom -O ihex Krok.elf  "Krok.hex"
+	-avr-objcopy -R .eeprom -O ihex Serwo.elf  "Serwo.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Krok.eep: Krok.elf
+Serwo.eep: Serwo.elf
 	@echo 'Create eeprom image (ihex format)'
-	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex Krok.elf  "Krok.eep"
+	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex Serwo.elf  "Serwo.eep"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: Krok.elf
+sizedummy: Serwo.elf
 	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=atmega8 Krok.elf
+	-avr-size --format=avr --mcu=atmega8 Serwo.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(EEPROM_IMAGE)$(FLASH_IMAGE)$(ELFS)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) Krok.elf
+	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(EEPROM_IMAGE)$(FLASH_IMAGE)$(ELFS)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) Serwo.elf
 	-@echo ' '
 
 secondary-outputs: $(LSS) $(FLASH_IMAGE) $(EEPROM_IMAGE) $(SIZEDUMMY)

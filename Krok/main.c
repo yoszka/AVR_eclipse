@@ -6,6 +6,7 @@
 #include "task.h"
 #include "hardware.h"
 
+
 // ****************** DEFINITION ***********************************************************
 
 
@@ -26,7 +27,6 @@ INT main (void)
 	
 	vSetPendingTask(vDelay1s);
 	vSetPendingTask(vDelay1s);
-	vSetPendingTask(vTurnOffLed1);
 	vSetPendingTask(vDelay1s);
 	vSetPendingTask(vTurnOffLed2);
 	vSetPendingTask(vDelay1s);

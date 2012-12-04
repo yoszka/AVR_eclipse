@@ -28,7 +28,10 @@ void vTurnOnLed3	(void);
 void vTurnOffLed1	(void);
 void vTurnOffLed2	(void);
 void vTurnOffLed3	(void);
-
+void vServoP		(void);
+void vServoS		(void);
+void vServoL		(void);
+void vServoManual	(void);
 
 // ******************** External definition ********************************
 extern T_TASK_FUNCTION 	apfTasks[];
