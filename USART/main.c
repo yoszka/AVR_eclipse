@@ -11,7 +11,7 @@
 
 
 // ****************** Global variables *****************************************
-volatile unsigned char dateReceived[RECEIVED_BYTE_BUFFER_SIZE];
+volatile unsigned char dataReceived[RECEIVED_BYTE_BUFFER_SIZE];
 volatile unsigned char startReading = 0;
 volatile unsigned char lastByte = 0;
 volatile unsigned int receivedByteCount = 0;
@@ -50,60 +50,60 @@ ISR(USART_RXC_vect)
 
     if((lastByte == '*') && (byte == ':') && (receivedByteCount == 0))                               //Detect Start frame
     {
-      dateReceived[receivedByteCount++] = lastByte;
+      dataReceived[receivedByteCount++] = lastByte;
     }
 
     if(receivedByteCount > 0)
     {
-    	dateReceived[receivedByteCount++] = byte;
+    	dataReceived[receivedByteCount++] = byte;
     	if(receivedByteCount == RECEIVED_BYTE_BUFFER_SIZE) receivedByteCount--;
     }
 
 
     if((lastByte == ':') && (byte == '#') && (receivedByteCount > 10)){
-    	dateReceived[receivedByteCount++] = 0x00;
-    	USART_Transmit_string(dateReceived);
+    	dataReceived[receivedByteCount++] = 0x00;
+    	USART_Transmit_string(dataReceived);
     	receivedByteCount = 0;
 
-    	if(dateReceived[2] == 'P'){
+    	if(dataReceived[2] == 'P'){
     		USART_Transmit_string("Period = ");
-    		USART_Transmit(dateReceived[3]);
-    		USART_Transmit(dateReceived[4]);
-    		USART_Transmit(dateReceived[5]);
+    		USART_Transmit(dataReceived[3]);
+    		USART_Transmit(dataReceived[4]);
+    		USART_Transmit(dataReceived[5]);
 
-    		dateReceived[3] -= '0';
-    		dateReceived[4] -= '0';
-    		dateReceived[5] -= '0';
+    		dataReceived[3] -= '0';
+    		dataReceived[4] -= '0';
+    		dataReceived[5] -= '0';
 
-    		temp = dateReceived[3]*100 + dateReceived[4]*10 + dateReceived[5];
+    		temp = dataReceived[3]*100 + dataReceived[4]*10 + dataReceived[5];
 
     		dPeriod = ((double)temp)*0.1;
     	}
-    	if(dateReceived[6] == 'H'){
+    	if(dataReceived[6] == 'H'){
     		USART_Transmit_string("HIGH = ");
-    		USART_Transmit(dateReceived[7]);
-    		USART_Transmit(dateReceived[8]);
-    		USART_Transmit(dateReceived[9]);
+    		USART_Transmit(dataReceived[7]);
+    		USART_Transmit(dataReceived[8]);
+    		USART_Transmit(dataReceived[9]);
 
-    		dateReceived[7] -= '0';
-    		dateReceived[8] -= '0';
-    		dateReceived[9] -= '0';
+    		dataReceived[7] -= '0';
+    		dataReceived[8] -= '0';
+    		dataReceived[9] -= '0';
 
-    		temp = dateReceived[7]*100 + dateReceived[8]*10 + dateReceived[9];
+    		temp = dataReceived[7]*100 + dataReceived[8]*10 + dataReceived[9];
 
     		dPeriod = ((double)temp)*0.1;
     	}
-    	if(dateReceived[10] == 'R'){
+    	if(dataReceived[10] == 'R'){
     		USART_Transmit_string("Repeater = ");
-    		USART_Transmit(dateReceived[11]);
-    		USART_Transmit(dateReceived[12]);
-    		USART_Transmit(dateReceived[13]);
+    		USART_Transmit(dataReceived[11]);
+    		USART_Transmit(dataReceived[12]);
+    		USART_Transmit(dataReceived[13]);
 
-    		dateReceived[11] -= '0';
-    		dateReceived[12] -= '0';
-    		dateReceived[13] -= '0';
+    		dataReceived[11] -= '0';
+    		dataReceived[12] -= '0';
+    		dataReceived[13] -= '0';
 
-    		uiRepeater = dateReceived[11]*100 + dateReceived[12]*10 + dateReceived[13];
+    		uiRepeater = dataReceived[11]*100 + dataReceived[12]*10 + dataReceived[13];
 
 
     	}

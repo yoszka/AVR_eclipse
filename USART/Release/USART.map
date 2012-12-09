@@ -32,7 +32,7 @@ c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr4\libgcc.a(_clz.o)
 Allocating common symbols
 Common symbol       size              file
 
-dateReceived        0x20              ./main.o
+dataReceived        0x20              ./main.o
 
 Memory Configuration
 
@@ -321,11 +321,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr4\libgcc.a
  .bss           0x0080019a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr4/crtm8.o
  .bss           0x0080019a       0x12 ./main.o
                 0x0080019b                lastByte
-                0x008001a6                udRepeater
                 0x008001aa                temp
-                0x008001a2                udHigh
+                0x008001a2                dHigh
+                0x008001a6                uiRepeater
                 0x0080019c                receivedByteCount
-                0x0080019e                udPeriod
+                0x0080019e                dPeriod
                 0x0080019a                startReading
  .bss           0x008001ac        0x0 ./usart.o
  .bss           0x008001ac        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr4\libgcc.a(_udivmodsi4.o)
@@ -345,7 +345,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr4\libgcc.a
  *(.bss*)
  *(COMMON)
  COMMON         0x008001ac       0x20 ./main.o
-                0x008001ac                dateReceived
+                0x008001ac                dataReceived
                 0x008001cc                PROVIDE (__bss_end, .)
                 0x00000b06                __data_load_start = LOADADDR (.data)
                 0x00000c40                __data_load_end = (__data_load_start + SIZEOF (.data))

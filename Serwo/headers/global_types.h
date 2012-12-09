@@ -1,7 +1,7 @@
 // Definition of the types ***************************************
 
-#define TRUE		   (!0)
-#define FALSE		     0
+#define TRUE			(!0)
+#define FALSE			(0)
 
 //#define NULL					((void*)0)
 
