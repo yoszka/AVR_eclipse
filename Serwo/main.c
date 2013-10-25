@@ -3,12 +3,12 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include <string.h>
-#include "global_types.h"
-#include "header_file_1.h"
-#include "header_file_2.h"
-#include "task.h"
-#include "hardware.h"
-#include "usart.h"
+#include "headers/global_types.h"
+#include "headers/header_file_1.h"
+#include "headers/header_file_2.h"
+#include "headers/task.h"
+#include "headers/hardware.h"
+#include "headers/usart.h"
 
 
 // ****************** DEFINITION ***********************************************************
@@ -39,6 +39,7 @@ INT main (void)
 	vInitPipe();
 	
 	USART_Init ( 9600 );
+
 	sei();
 	USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
 
@@ -81,6 +82,7 @@ ISR(USART_RXC_vect)
     	if(0 == strcmp("*:START:#", (char*)dataReceived)){
     		USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
 			lastByte = byte;
+			LED_2_ON
 			return;
     	}
 
