@@ -10,9 +10,8 @@
 #include "../headers/hardware.h"
 
 // ****************** Global variables *****************************************
-UINT uiWorkFlowFlag = 0b00000000;
-T_TASK_FUNCTION apfTasks[MAX_NBR_OF_TASKS];
 
+// ***************** Implementation ********************************************
 /**
  * Delay 1s
  */

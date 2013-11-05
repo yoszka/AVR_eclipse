@@ -6,9 +6,9 @@
 
 
 // ****************** Global variables ******************************************************
-UCHAR ucPipeHead	= 0; 
-UCHAR ucPipeTail	= 0;
-UCHAR ucQueueCnt	= 0;
+UCHAR ucPipeHead    = 0;
+UCHAR ucPipeTail    = 0;
+UCHAR ucQueueCnt    = 0;
 
 // ******************************************************************************************
 // ******************************************************************************************
@@ -20,13 +20,13 @@ UCHAR ucQueueCnt	= 0;
 * Task dispatcher
 */
 void vDispathTask(void){
-	if( CHECK_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE) ){
-		T_TASK_FUNCTION pfNextTask = vGetPendingTask();
-		if(pfNextTask != NULL){
-			pfNextTask();
-		}
-	}
-	
+    if( CHECK_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE) ){
+        T_TASK_FUNCTION pfNextTask = vGetPendingTask();
+        if(pfNextTask != NULL){
+            pfNextTask();
+        }
+    }
+
 }
 
 
@@ -34,13 +34,13 @@ void vDispathTask(void){
 *  Initialize pipe
 */
 void vInitPipe(void){
-	ucPipeHead = 0;
-	ucPipeTail = 0;
-	ucQueueCnt = 0;
+    ucPipeHead = 0;
+    ucPipeTail = 0;
+    ucQueueCnt = 0;
 
-	for(UCHAR i = 0; i < MAX_NBR_OF_TASKS; i++){
-		apfTasks[i] = (T_TASK_FUNCTION)NULL;
-	}
+    for(UCHAR i = 0; i < MAX_NBR_OF_TASKS; i++){
+        apfTasks[i] = (T_TASK_FUNCTION)NULL;
+    }
 }
 
 
@@ -49,27 +49,27 @@ void vInitPipe(void){
 * @return pointer to task function, or NULL if queue empty
 */
 T_TASK_FUNCTION vGetPendingTask(void){
-	T_TASK_FUNCTION pfNextTask = (T_TASK_FUNCTION)NULL;
+    T_TASK_FUNCTION pfNextTask = (T_TASK_FUNCTION)NULL;
 
-	if(ucPipeHead == ucPipeTail){										// return nothing if no task in queue
-		return (T_TASK_FUNCTION)NULL;
-	}
+    if(ucPipeHead == ucPipeTail){                                               // return nothing if no task in queue
+        return (T_TASK_FUNCTION)NULL;
+    }
 
-	pfNextTask = apfTasks[ucPipeHead];									// retrieve next task
+    pfNextTask = apfTasks[ucPipeHead];                                          // retrieve next task
 
-	ucPipeHead++;														// shift head pointer
-	ucPipeHead = (ucPipeHead == MAX_NBR_OF_TASKS) ? 0 : ucPipeHead;		// loop if need
+    ucPipeHead++;                                                               // shift head pointer
+    ucPipeHead = (ucPipeHead == MAX_NBR_OF_TASKS) ? 0 : ucPipeHead;             // loop if need
 
 
-	if(ucPipeHead == ucPipeTail){						
-		CLEAR_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE);				// No other pending tasks
-	}
+    if(ucPipeHead == ucPipeTail){
+        CLEAR_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE);                        // No other pending tasks
+    }
 
-	if(ucQueueCnt > 0){
-		ucQueueCnt--;													// Decrement count of tasks in queue
-	}
+    if(ucQueueCnt > 0){
+        ucQueueCnt--;                                                           // Decrement count of tasks in queue
+    }
 
-	return pfNextTask;
+    return pfNextTask;
 }
 
 
@@ -80,20 +80,20 @@ T_TASK_FUNCTION vGetPendingTask(void){
 */
 BOOL vSetPendingTask(T_TASK_FUNCTION task){
 
-	if(ucQueueCnt >= (MAX_NBR_OF_TASKS - 1)){							// Always one element in queue is empty
-		return FALSE;													// Queue if full :(
-	}
+    if(ucQueueCnt >= (MAX_NBR_OF_TASKS - 1)){                                   // Always one element in queue is empty
+        return FALSE;                                                           // Queue if full :(
+    }
 
-	apfTasks[ucPipeTail] = task;
-	SET_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE);
+    apfTasks[ucPipeTail] = task;
+    SET_WORK_FLOW_FLAG(WFF_PENDING_TASK_IN_QUEUE);
 
-	ucPipeTail++;														// shift head pointer
-	ucPipeTail = (ucPipeTail == MAX_NBR_OF_TASKS) ? 0 : ucPipeTail;
-										
+    ucPipeTail++;                                                               // shift head pointer
+    ucPipeTail = (ucPipeTail == MAX_NBR_OF_TASKS) ? 0 : ucPipeTail;
 
-	if(ucQueueCnt < MAX_NBR_OF_TASKS){
-		ucQueueCnt++;													// Increment queue count
-	}
 
-	return TRUE;
+    if(ucQueueCnt < MAX_NBR_OF_TASKS){
+        ucQueueCnt++;                                                           // Increment queue count
+    }
+
+    return TRUE;
 }

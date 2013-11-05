@@ -26,7 +26,7 @@ C_DEPS += \
 %.o: ../%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: AVR Compiler'
-	avr-gcc -I"E:\E_ELEKTRONIKA\WinAVR\eclipse\WORKSPACE\AVR_eclipse\Serwo\headers" -Wall -Os -fpack-struct -fshort-enums -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega8 -DF_CPU=8000000UL -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -c -o "$@" "$<"
+	avr-gcc -I"I:\E_ELEKTRONIKA\WinAVR\eclipse — kopia\WORKSPACE\AVR_eclipse\Serwo\headers" -Wall -Os -fpack-struct -fshort-enums -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega8 -DF_CPU=8000000UL -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

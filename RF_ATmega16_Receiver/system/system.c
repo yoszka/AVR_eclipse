@@ -14,6 +14,9 @@
 
 
 // ****************** Global variables ******************************************************
+UINT uiWorkFlowFlag = 0b00000000;
+T_TASK_FUNCTION apfTasks[MAX_NBR_OF_TASKS];
+
 UCHAR ucPipeHead    = 0;
 UCHAR ucPipeTail    = 0;
 UCHAR ucQueueCnt    = 0;

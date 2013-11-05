@@ -21,11 +21,11 @@
 // Ports definition
 #define LCD_REJ_KIER_RS_E   DDRA
 #define LCD_REJ_PORT_RS_E   PORTA
-#define LCD_RS              3
-#define LCD_E               4
+#define LCD_RS              2
+#define LCD_E               3
 
-#define LCD_REJ_KIER        DDRB
-#define LCD_REJ_PORT        PORTB
+#define LCD_REJ_KIER        DDRA
+#define LCD_REJ_PORT        PORTA
 #define LCD_DB4             4
 #define LCD_DB5             5
 #define LCD_DB6             6

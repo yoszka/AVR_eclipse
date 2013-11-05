@@ -23,7 +23,8 @@ void vTurnOnLed1(void){
 }
 
 void vTurnOffLed1(void){
-    LED_1_OFF
+//    LED_1_OFF
+    LED_OFF(1)
 }
 
 void vTurnOnLed2(void){
@@ -32,7 +33,8 @@ void vTurnOnLed2(void){
 }
 
 void vTurnOffLed2(void){
-    LED_2_OFF
+//    LED_2_OFF
+    LED_OFF(2)
 }
 
 //void vTurnOnLed3(void){
@@ -88,7 +90,24 @@ void vServoManual(void){
 
 void vWaitForSwitch_1(void){
 
-    WAIT_FOR_SWITCH_1
-//    WAIT_FOR_SWITCH(1)
-//    WAIT_FOR_SWITCH2(1);
+//    WAIT_FOR_SWITCH_1
+    WAIT_FOR_SWITCH(1)
+}
+
+void vWaitForSwitch_2(void){
+
+//    WAIT_FOR_SWITCH_1
+    WAIT_FOR_SWITCH(2)
+}
+
+void vBlinkDiode1(void){
+
+    LED_TOGGLE(1)
+    _delay_ms(1000);
+    LED_TOGGLE(1)
+//    _delay_ms(1000);
+//    LED_TOGGLE(1)
+//    _delay_ms(1000);
+//    LED_TOGGLE(1)
+
 }

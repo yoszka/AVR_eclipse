@@ -4,22 +4,28 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../lcd_jokii.c \
 ../main.c \
 ../system.c \
 ../tasks.c \
-../usart.c 
+../usart.c \
+../util.c 
 
 OBJS += \
+./lcd_jokii.o \
 ./main.o \
 ./system.o \
 ./tasks.o \
-./usart.o 
+./usart.o \
+./util.o 
 
 C_DEPS += \
+./lcd_jokii.d \
 ./main.d \
 ./system.d \
 ./tasks.d \
-./usart.d 
+./usart.d \
+./util.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

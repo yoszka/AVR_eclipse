@@ -1,0 +1,1 @@
+CUnit tests for stDecodeFrame, stEncodeFrame and uiCRC16 functions

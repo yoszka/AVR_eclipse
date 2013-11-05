@@ -42,8 +42,12 @@
 /**
  * Put the number of the switch as parameter
  */
+#define CONFIG_SWITCH(n)    {SWITCH_##n##_DDR &= ~_BV(SWITCH_##n##_BIT);  SWITCH_##n##_PORT |= _BV(SWITCH_##n##_BIT);}     // N/A, Use this at beginning of program
+#define WAIT_FOR_SWITCH(n)  {while(bit_is_set(SWITCH_##n##_PIN, SWITCH_##n##_BIT));}                                       // N/A
+
+// Dead end following macros work not very well, HW is configured to slow to read its state right after.
 //#define WAIT_FOR_SWITCH(n)  {SWITCH_##n##_DDR &= ~_BV(SWITCH_##n##_BIT);  SWITCH_##n##_PORT |= _BV(SWITCH_##n##_BIT); while(SWITCH_##n##_PIN & _BV(SWITCH_##n##_BIT));}     // N/A
-#define WAIT_FOR_SWITCH(n)  {SWITCH_##n##_DDR &= ~_BV(SWITCH_##n##_BIT);  SWITCH_##n##_PORT |= _BV(SWITCH_##n##_BIT); while(bit_is_set(SWITCH_##n##_PIN, SWITCH_##n##_BIT));}     // N/A
+//#define WAIT_FOR_SWITCH(n)  {SWITCH_##n##_DDR &= ~_BV(SWITCH_##n##_BIT);  SWITCH_##n##_PORT |= _BV(SWITCH_##n##_BIT); while(bit_is_set(SWITCH_##n##_PIN, SWITCH_##n##_BIT));}     // N/A
 
 #endif // INCLUDE_HARDWARE
 

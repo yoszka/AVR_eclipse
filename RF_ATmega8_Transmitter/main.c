@@ -28,7 +28,7 @@ INT main (void)
     vSetPendingTask(vTask_TurnOnLed1);
     vSetPendingTask(vTask_TramssmitAfterButtonPush);
 
-    vEnableInterrupts();
+//    vEnableInterrupts();
 
     while(TRUE){
         vDispathTask();
