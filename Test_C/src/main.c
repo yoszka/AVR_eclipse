@@ -23,7 +23,7 @@ typedef struct{
 }RF_FRAME;
 
 RF_FRAME stDecodeFrame(UCHAR* pucRawFrameData, UCHAR ucLength);
-UCHAR* stEncodeFrame(RF_FRAME stFrame);
+UCHAR* ucEncodeFrame(RF_FRAME stFrame);
 
 int main(void) {
     puts("Hello Cruel World");
@@ -35,7 +35,7 @@ int main(void) {
                         .pucData        = (UCHAR*)acText,
                         .ucDataLength   = strlen(acText)};
 
-    UCHAR* pucFrame = stEncodeFrame(stFrame);
+    UCHAR* pucFrame = ucEncodeFrame(stFrame);
     for(UCHAR i = 0; i < sizeof(stFrame) - sizeof(UCHAR*) + stFrame.ucDataLength; i++){
         printf("%d \t%c\n", pucFrame[i], pucFrame[i]);
     }

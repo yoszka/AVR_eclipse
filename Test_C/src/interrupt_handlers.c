@@ -53,7 +53,7 @@ typedef struct{
 // ****************** Declarations *********************************************
 
 RF_FRAME stDecodeFrame(UCHAR* pucRawFrameData, UCHAR ucLength);
-UCHAR* stEncodeFrame(RF_FRAME stFrame);
+UCHAR* ucEncodeFrame(RF_FRAME stFrame);
 
 // *****************************************************************************
 // *****************************************************************************
@@ -99,7 +99,7 @@ RF_FRAME stDecodeFrame(UCHAR* pucRawFrameData, UCHAR ucLength){
     return stFrame;
 }
 
-UCHAR* stEncodeFrame(RF_FRAME stFrame){
+UCHAR* ucEncodeFrame(RF_FRAME stFrame){
     // *:xx#p#LM#payload:#
     UCHAR* pucFrame = malloc( START_SEQ_LEN                                     // *:
                             + FRAME_ID_LENGTH                                   // xx

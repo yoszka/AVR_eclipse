@@ -5,6 +5,7 @@
  */
 
 #include <avr/interrupt.h>
+#include "headers/util.h"
 #include "headers/global_types.h"
 #include "lcd/lcd_jokii.h"
 #include "system/task.h"
@@ -56,7 +57,7 @@ typedef struct{
 // ****************** Declarations *********************************************
 
 RF_FRAME stDecodeFrame(UCHAR* pucRawFrameData, UCHAR ucLength);
-UCHAR* stEncodeFrame(RF_FRAME stFrame);
+UCHAR ucEncodeFrame(RF_FRAME stFrame, UCHAR* pucRfDataBuffer);
 
 // *****************************************************************************
 // *****************************************************************************
@@ -76,7 +77,6 @@ UCHAR* stEncodeFrame(RF_FRAME stFrame);
 ISR(USART_RXC_vect)
 {
     UCHAR byte = UDR;
-    UCHAR ucFrameId = 0;
 
     if((vucLastByte == '*') && (byte == ':') && (vuiReceivedByteCount == 0))    //Detect Start frame
     {
@@ -96,25 +96,22 @@ ISR(USART_RXC_vect)
     if((vucLastByte == ':') && (byte == '#')                                    // Detect end frame
             && (vuiReceivedByteCount > MINIMUM_DATA_RECEIVED_CNT)){
 
-        avucDataReceived[vuiReceivedByteCount++] = 0x00;                        // Put zero string terminator at the end
+        RF_FRAME stFrame = stDecodeFrame((UCHAR*)avucDataReceived, (UCHAR)vuiReceivedByteCount);
+        UINT uiCrcTmp = uiCRC16(stFrame.pucData, stFrame.ucDataLength);             // Calculate CRC
         vuiReceivedByteCount = 0;
 
-        // Decode frame id. Since radio channel is very noisy need to retransmit
-        // same frame multiple times. Next received frames with same ID will be
-        // skipped.
-        avucDataReceived[2] -= '0';
-        avucDataReceived[3] -= '0';
-
-        ucFrameId = avucDataReceived[2]*10 + avucDataReceived[3];               // Calculate frame ID
-
-        if(ucFrameId != vucLastFrameId)
+        if((stFrame.ucId != vucLastFrameId) && (uiCrcTmp == stFrame.uiCrc16))
         {
             vSetPendingTask(vTask_BlinkDiode1);
             LCD_Czysc();
-            LCD_ZapiszText((CHAR*) (avucDataReceived + FRAME_HEADER_AND_ID));
+            memcpy((void*)avucDataReceived, stFrame.pucData, stFrame.ucDataLength);
+            avucDataReceived[stFrame.ucDataLength] = 0;
 
-            vucLastFrameId = ucFrameId;
+            LCD_ZapiszText((CHAR*) avucDataReceived);
+
+            vucLastFrameId = stFrame.ucId;
         }
+
     }
 
     vucLastByte = byte;
@@ -165,27 +162,37 @@ RF_FRAME stDecodeFrame(UCHAR* pucRawFrameData, UCHAR ucLength){
     return stFrame;
 }
 
-UCHAR* stEncodeFrame(RF_FRAME stFrame){
+/**
+ * Encode data from {@code stFrame}, and put raw data to {@code pucRfDataBuffer}
+ * DON'T FORGET freepucRfDataBuffer.
+ * @return length of data in pucRfDataBuffer
+ */
+UCHAR ucEncodeFrame(RF_FRAME stFrame, UCHAR* pucRfDataBuffer){
     // *:xx#p#LM#payload:#
-    UCHAR* pucFrame = malloc( START_SEQ_LEN                                     // *:
-                            + FRAME_ID_LENGTH                                   // xx
-                            + DELIMITER_SEQ_LEN                                 // #
-                            + FRAME_PROT_VER_LEN                                // p
-                            + DELIMITER_SEQ_LEN                                 // #
-                            + FRAME_CRC16_LENGTH                                // LM
-                            + DELIMITER_SEQ_LEN                                 // #
-                            + stFrame.ucDataLength                              // payload
-                            + STOP_SEQ_LEN);                                    // :#
 
-    if(pucFrame != NULL){
-        sprintf((CHAR*)pucFrame, START_SEQ"%02d"DELIMITER_SEQ"%d"DELIMITER_SEQ, stFrame.ucId, stFrame.ucProtVer); // *:xx#p#
-        pucFrame[FRAME_CRC16_LSB_POS] =  stFrame.uiCrc16                 & _16_BIT_LSB_MASK;                      // L
-        pucFrame[FRAME_CRC16_MSB_POS] = (stFrame.uiCrc16 >> BYTE_LENGTH) & _16_BIT_LSB_MASK;                      // M
+    UCHAR ucDataLength =  START_SEQ_LEN                                         // *:
+                        + FRAME_ID_LENGTH                                       // xx
+                        + DELIMITER_SEQ_LEN                                     // #
+                        + FRAME_PROT_VER_LEN                                    // p
+                        + DELIMITER_SEQ_LEN                                     // #
+                        + FRAME_CRC16_LENGTH                                    // LM
+                        + DELIMITER_SEQ_LEN                                     // #
+                        + stFrame.ucDataLength                                  // payload
+                        + STOP_SEQ_LEN;                                         // :#
 
-        memcpy((pucFrame + FRAME_CRC16_MSB_POS + 1),                 DELIMITER_SEQ,   DELIMITER_SEQ_LEN);         // #
-        memcpy((pucFrame + FRAME_DATA_START),                        stFrame.pucData, stFrame.ucDataLength);      // payload
-        memcpy((pucFrame + FRAME_DATA_START + stFrame.ucDataLength), STOP_SEQ,        STOP_SEQ_LEN);              // :#
+    pucRfDataBuffer = malloc(ucDataLength);
 
+    if(pucRfDataBuffer != NULL){
+        sprintf((CHAR*)pucRfDataBuffer, START_SEQ"%02d"DELIMITER_SEQ"%d"DELIMITER_SEQ, stFrame.ucId, stFrame.ucProtVer); // *:xx#p#
+        pucRfDataBuffer[FRAME_CRC16_LSB_POS] =  stFrame.uiCrc16                 & _16_BIT_LSB_MASK;                      // L
+        pucRfDataBuffer[FRAME_CRC16_MSB_POS] = (stFrame.uiCrc16 >> BYTE_LENGTH) & _16_BIT_LSB_MASK;                      // M
+
+        memcpy((pucRfDataBuffer + FRAME_CRC16_MSB_POS + 1),                 DELIMITER_SEQ,   DELIMITER_SEQ_LEN);         // #
+        memcpy((pucRfDataBuffer + FRAME_DATA_START),                        stFrame.pucData, stFrame.ucDataLength);      // payload
+        memcpy((pucRfDataBuffer + FRAME_DATA_START + stFrame.ucDataLength), STOP_SEQ,        STOP_SEQ_LEN);              // :#
+
+    }else{
+        ucDataLength = 0;
     }
-    return pucFrame;
+    return ucDataLength;
 }

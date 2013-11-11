@@ -6,17 +6,20 @@
 C_SRCS += \
 ../interrupt_handlers.c \
 ../main.c \
-../usart.c 
+../usart.c \
+../util.c 
 
 OBJS += \
 ./interrupt_handlers.o \
 ./main.o \
-./usart.o 
+./usart.o \
+./util.o 
 
 C_DEPS += \
 ./interrupt_handlers.d \
 ./main.d \
-./usart.d 
+./usart.d \
+./util.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -8,8 +8,6 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#include "global_types.h"
-
 // ******************** Definition *****************************************
 
 #define ZERO_SIGN            0xFE

@@ -58,3 +58,17 @@ void USART_Transmit_string( unsigned char* string )
         //string++;
     }
 }
+
+
+/**
+ * Transmit buffer data
+ */
+void USART_Transmit_buffer(unsigned char* buffer, unsigned char length)
+{
+    unsigned char i = 0;
+    for(i = 0; i < length; i++)
+    {
+        USART_Transmit(buffer[i]);
+        //string++;
+    }
+}
