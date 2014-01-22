@@ -1,0 +1,4 @@
+Added configurable MAC & IP - stored in EEPROM memory
+
+ToDo:
+Add configurable port

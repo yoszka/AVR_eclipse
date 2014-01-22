@@ -4,16 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../GMD.c \
-../led.c 
+../led.c \
+../main.c 
 
 OBJS += \
-./GMD.o \
-./led.o 
+./led.o \
+./main.o 
 
 C_DEPS += \
-./GMD.d \
-./led.d 
+./led.d \
+./main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

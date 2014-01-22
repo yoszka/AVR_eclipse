@@ -6,30 +6,18 @@
 //
 //  led.c : Definitions for simple LED usage
 
-
-
 #include "led.h"
 
-int led_state = 0;
-int LEDInit()
-{
-    LED_OUTPUT_MODE();
-
-    return 1;
-}
-
 //--------------------------------------------------------------------------------------------
-// set led on off
-int LEDSet(int st)	
-{
-    led_state = st;
-    if (st)
-        LED_HIGH();
-    else
-        LED_LOW();
-    return 1;
+void ledOn(void) {
+    LED_ON(1);
 }
 
-void LEDToggle() {
-    if (led_state) LEDSet(0); else LEDSet(1);
+void ledOff(void) {
+    LED_OFF(1);
 }
+
+void ledToggle(void) {
+    LED_TOGGLE(1);
+}
+
