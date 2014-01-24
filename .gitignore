@@ -24,3 +24,8 @@
 
 # Eclipse workspace meta data
 /.metadata
+
+# other
+Karol-RTC.rar
+Karol-RTC/*
+ArduinoUNO/*
