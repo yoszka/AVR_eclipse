@@ -99,6 +99,14 @@ int main(void) {
 
     ledOn();
 
+    DDRD &= ~_BV(3); // S1
+    DDRD &= ~_BV(4); // S2
+
+    // read values from eeprom
+    //storeIpToEeprom(g_aucMyIp);
+    readIpFromEeprom(g_aucMyIp);
+    readIpExtFromEeprom(g_aucMyExtIp);
+    readMacFromEeprom(g_aucMyMac);
 
     //=====setup eth interface
 //    uint16_t plen = 0;
@@ -117,11 +125,6 @@ int main(void) {
     _delay_ms(100);
 
     //init the ethernet/ip layer:
-    // read values from eeprom
-//    storeIpToEeprom(g_aucMyIp);
-    readIpFromEeprom(g_aucMyIp);
-    readIpExtFromEeprom(g_aucMyExtIp);
-    readMacFromEeprom(g_aucMyMac);
 
     init_udp_or_www_server(g_aucMyMac, g_aucMyIp);
     www_server_port(MYWWWPORT);
