@@ -21,3 +21,15 @@ void ledToggle(void) {
     LED_TOGGLE(1);
 }
 
+void led2On(void) {
+    LED_ON(2);
+}
+
+void led2Off(void) {
+    LED_OFF(2);
+}
+
+void led2Toggle(void) {
+    LED_TOGGLE(2);
+}
+

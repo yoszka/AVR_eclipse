@@ -40,26 +40,19 @@
 
 #include "led.h"
 
-// HD44780 LCD Class
-
-// enc28j60 Ethernet Class
-
 // please modify the following two lines. mac and ip have to be unique
 // in your local area network. You can not have the same numbers in
 // two devices:
 
-static uint8_t mymac_ee[6] EEMEM;
-static uint8_t myip_ee[4] EEMEM;
+static uint8_t mymac_ee[6]   EEMEM;
+static uint8_t myip_ee[4]    EEMEM;
 static uint8_t myipext_ee[4] EEMEM;
 
-//static uint8_t temp;
-//static uint8_t temp_ee  EEMEM;
+static uint8_t g_aucMyMac[6] = { 0x34, 0x35, 0x36, 0x37, 0x38, 0x39 };  // default MAC
+static uint8_t g_aucMyIp[4] = { 192, 168, 0, 109 };                     // default IP
+static uint8_t g_aucMyExtIp[4] = { 87, 105, 8, 92 };                    // default external IP
 
-static uint8_t g_aucMyMac[6] = { 0x34, 0x35, 0x36, 0x37, 0x38, 0x39 };
-static uint8_t g_aucMyIp[4] = { 192, 168, 0, 109 };
-static uint8_t g_aucMyExtIp[4] = { 87, 105, 8, 91 }; //87.105.8.91
 // listen port for tcp/www (max range 1-254)
-
 // Auxiliary macros to turn numeric definition into string
 #define STRINGIZE_(x)   #x
 #define STRINGIZE(x)    STRINGIZE_(x)
@@ -97,16 +90,30 @@ void PingCallback(uint8_t *ip) {
  */
 int main(void) {
 
-    ledOn();
+    //ledOn();
 
     DDRD &= ~_BV(3); // S1
+    PORTD |= _BV(3);
     DDRD &= ~_BV(4); // S2
+    PORTD |= _BV(4);
 
-    // read values from eeprom
+    if (bit_is_clear(PIND, 3)) {  // if S1 is pressed then store default values to EEPROM
+        // read values from eeprom
+        storeIpToEeprom(g_aucMyIp);
+        storeIpExtToEeprom(g_aucMyExtIp);
+        storeMacToEeprom(g_aucMyMac);
+        ledOn();
+    }
+
+    if (bit_is_set(PIND, 4)) {  // if S2 is not pressed read IP, ext. IP and MAC from EEPROM, otherwise use defaults
+        // read values from eeprom
+        readIpFromEeprom(g_aucMyIp);
+        readIpExtFromEeprom(g_aucMyExtIp);
+        readMacFromEeprom(g_aucMyMac);
+        led2On();
+    }
+
     //storeIpToEeprom(g_aucMyIp);
-    readIpFromEeprom(g_aucMyIp);
-    readIpExtFromEeprom(g_aucMyExtIp);
-    readMacFromEeprom(g_aucMyMac);
 
     //=====setup eth interface
 //    uint16_t plen = 0;
@@ -134,7 +141,6 @@ int main(void) {
 
         // handle ping and wait for a tcp packet:
         dat_p = packetloop_arp_icmp_tcp(buf, enc28j60PacketReceive(BUFFER_SIZE, buf));
-
         // dat_p will be unequal to zero if there is a valid http get
         if (dat_p == 0) {
             // do nothing
@@ -215,6 +221,7 @@ int main(void) {
             sprintf(szWebText, "%d",g_aucMyExtIp[3]);
             dat_p = fill_tcp_data(buf, dat_p, szWebText);
             dat_p = fill_tcp_data_p(buf, dat_p, PSTR(" /><br><input type=submit value=Update></button></form>"));
+//            dat_p = fill_tcp_data_p(buf, dat_p, PSTR(" /><input type=hidden name=ipe5 value=9 /><br><input type=submit value=Update></button></form>"));
 
             goto SENDTCP;
         }
@@ -256,6 +263,9 @@ int main(void) {
 
             dat_p = fill_tcp_data_p(buf, 0, PSTR("HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nPragma: no-cache\r\n\r\n")); // HTTP header
             dat_p = fill_tcp_data_p(buf, dat_p, PSTR("STORED"));
+//            sprintf(szWebText, "STORED<br>"
+//                    "<form method=post action=\"http://%d.%d.%d.%d:"MYWWWPORT_STR"\"><button type=submit value=\"HOME\" /></form>",g_aucMyIp[0],g_aucMyIp[1],g_aucMyIp[2],g_aucMyIp[3]);
+//            dat_p = fill_tcp_data(buf, dat_p, szWebText);
 
             readIpFromEeprom(g_aucMyIp);
             readIpExtFromEeprom(g_aucMyExtIp);
@@ -418,8 +428,7 @@ void updateIpIfNeeded(uint8_t* paucResponse) {
 
     for (uint8_t i = 0; i < 4; i++) {
         sprintf(acParameter, "ip%d=", i + 1);
-        int pos = getParameter((char*) paucResponse, acParameter, acBuffer,
-                sizeof(acBuffer));
+        int pos = getParameter((char*) paucResponse, acParameter, acBuffer, sizeof(acBuffer));
         if (pos) {
             acIpBuffer[i] = atoi(acBuffer);
         }
@@ -440,13 +449,11 @@ void updateIpExtIfNeeded(uint8_t* paucResponse) {
 
     for (uint8_t i = 0; i < 4; i++) {
         sprintf(acParameter, "ipe%d=", i + 1);
-        int pos = getParameter((char*) paucResponse, acParameter, acBuffer,
-                sizeof(acBuffer));
+        int pos = getParameter((char*) paucResponse, acParameter, acBuffer, sizeof(acBuffer));
         if (pos) {
             acIpBuffer[i] = atoi(acBuffer);
         }
     }
-
     storeIpExtToEeprom(acIpBuffer);
 }
 
@@ -462,8 +469,7 @@ void updateMacIfNeeded(uint8_t* paucResponse) {
 
     for (uint8_t i = 0; i < 6; i++) {
         sprintf(acParameter, "mac%d=", i + 1);
-        int pos = getParameter((char*) paucResponse, acParameter, acBuff,
-                sizeof(acBuff));
+        int pos = getParameter((char*) paucResponse, acParameter, acBuff, sizeof(acBuff));
         if (pos) {
             acMacBuffer[i] = atoi(acBuff);
         }

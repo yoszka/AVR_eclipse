@@ -27,6 +27,10 @@ void ledOn(void);
 void ledOff(void);
 void ledToggle(void);
 
+void led2On(void);
+void led2Off(void);
+void led2Toggle(void);
+
 // ****************** LED ******************************************************************
 // S1 = PD3
 // S2 = PD4
