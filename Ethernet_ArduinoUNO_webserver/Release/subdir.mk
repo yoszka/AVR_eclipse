@@ -5,15 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../led.c \
-../main.c 
+../main.c \
+../trace.c \
+../usart.c 
 
 OBJS += \
 ./led.o \
-./main.o 
+./main.o \
+./trace.o \
+./usart.o 
 
 C_DEPS += \
 ./led.d \
-./main.d 
+./main.d \
+./trace.d \
+./usart.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

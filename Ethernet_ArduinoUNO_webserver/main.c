@@ -39,6 +39,8 @@
 #include "sensors/dht11.h"
 
 #include "led.h"
+#include "usart.h"
+#include "trace.h"
 
 // please modify the following two lines. mac and ip have to be unique
 // in your local area network. You can not have the same numbers in
@@ -89,13 +91,19 @@ void PingCallback(uint8_t *ip) {
  * Main entry point
  */
 int main(void) {
+    initTrace();
+    //char traceBuffer[100] = {0};
+    trace("Arduino start\n");
 
     //ledOn();
 
+    //USART_Init ( USART_BAUD_RATE );
+    //USART_Transmit_string((unsigned char*)"HELLO Arduino");                                                            // Transmit hello via USART
     DDRD &= ~_BV(3); // S1
     PORTD |= _BV(3);
     DDRD &= ~_BV(4); // S2
     PORTD |= _BV(4);
+
 
     if (bit_is_clear(PIND, 3)) {  // if S1 is pressed then store default values to EEPROM
         // read values from eeprom
@@ -103,6 +111,7 @@ int main(void) {
         storeIpExtToEeprom(g_aucMyExtIp);
         storeMacToEeprom(g_aucMyMac);
         ledOn();
+        trace("S1 is pressed\n");
     }
 
     if (bit_is_set(PIND, 4)) {  // if S2 is not pressed read IP, ext. IP and MAC from EEPROM, otherwise use defaults
@@ -110,6 +119,7 @@ int main(void) {
         readIpFromEeprom(g_aucMyIp);
         readIpExtFromEeprom(g_aucMyExtIp);
         readMacFromEeprom(g_aucMyMac);
+        trace("S2 not pressed\n");
         led2On();
     }
 
@@ -119,6 +129,8 @@ int main(void) {
 //    uint16_t plen = 0;
     uint16_t dat_p = 0;
     //initialize enc28j60
+    //sprintf(traceBuffer, "MAC init %02x:%02x:%02x:%02x:%02x:%02x\n", g_aucMyMac[0], g_aucMyMac[1], g_aucMyMac[2], g_aucMyMac[3], g_aucMyMac[4], g_aucMyMac[5]);
+    //trace(traceBuffer);
     enc28j60Init(g_aucMyMac);
 
     _delay_ms(100);
@@ -133,6 +145,8 @@ int main(void) {
 
     //init the ethernet/ip layer:
 
+    //sprintf(traceBuffer, "IP init %d.%d.%d.%d\n", g_aucMyIp[0], g_aucMyIp[1], g_aucMyIp[2], g_aucMyIp[3]);
+    //trace(traceBuffer);
     init_udp_or_www_server(g_aucMyMac, g_aucMyIp);
     www_server_port(MYWWWPORT);
     register_ping_rec_callback(PingCallback);
@@ -146,6 +160,10 @@ int main(void) {
             // do nothing
             continue;
         }
+        trace("## Received TCP packet:\n");
+        //sprintf(traceBuffer, "IP init %d.%d.%d.%d\n", g_aucMyIp[0], g_aucMyIp[1], g_aucMyIp[2], g_aucMyIp[3]);
+        trace(&buf[dat_p]);
+        trace("\n\n\n");
         char szWebText[500] = { 0 };
 
         // tcp port 80 begin
