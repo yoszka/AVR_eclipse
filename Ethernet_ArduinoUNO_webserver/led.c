@@ -1,23 +1,20 @@
-//  ATMega16 LED
-//
-//  (C) 2009 Radu Motisan , radu.motisan@gmail.com
-//  www.pocketmagic.net
-//  All rights reserved.
-//
-//  led.c : Definitions for simple LED usage
+/**
+ * led.c
+ *
+ * (C) 2014 Tomasz Jokiel , tomasz.jokiel@gmail.com
+ */
 
 #include "led.h"
 
-//--------------------------------------------------------------------------------------------
-void ledOn(void) {
+void led1On(void) {
     LED_ON(1);
 }
 
-void ledOff(void) {
+void led1Off(void) {
     LED_OFF(1);
 }
 
-void ledToggle(void) {
+void led1Toggle(void) {
     LED_TOGGLE(1);
 }
 

@@ -23,14 +23,10 @@
 #define LED_TOGGLE(n)       {LED_##n##_DDR |=  _BV(LED_##n##_BIT);  LED_##n##_PORT ^=  _BV(LED_##n##_BIT);}  // N/A
 
 // Function definition
-void ledOn(void);
-void ledOff(void);
-void ledToggle(void);
+void led1On(void);
+void led1Off(void);
+void led1Toggle(void);
 
 void led2On(void);
 void led2Off(void);
 void led2Toggle(void);
-
-// ****************** LED ******************************************************************
-// S1 = PD3
-// S2 = PD4

@@ -8,7 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include sensors/subdir.mk
 -include net/subdir.mk
 -include subdir.mk
 -include objects.mk
