@@ -1,11 +1,8 @@
 #include "global_types.h"
 #include "task.h"
+#include "tasks_aux.h"
 #include <util/delay.h>
 #include "hardware.h"
-
-extern volatile double dPeriod;
-extern volatile double dHigh;
-extern volatile unsigned int uiRepeater;
 
 /**
 * Delay 1s
@@ -75,11 +72,11 @@ void vServoL(void){
 
 void vServoManual(void){
 
-	for (int i = 0; i < uiRepeater; i++){
+	for (int i = 0; i < g_stServoMenualParameters.uiRepeater; i++){
 		LED_1_ON
-		_delay_ms(dHigh);
+		_delay_ms(g_stServoMenualParameters.dHigh);
 //		_delay_us(dHigh);
 		LED_1_OFF
-		_delay_ms(dPeriod);
+		_delay_ms(g_stServoMenualParameters.dPeriod);
 	}
 }

@@ -7,6 +7,7 @@
 #include "headers/header_file_1.h"
 #include "headers/header_file_2.h"
 #include "headers/task.h"
+#include "headers/tasks_aux.h"
 #include "headers/hardware.h"
 #include "headers/usart.h"
 
@@ -17,21 +18,21 @@
 #define DEBUG_OUTPUT					FALSE
 
 
+// ****************** Static variables ******************************************************
+// USART part
+static volatile unsigned char dataReceived[RECEIVED_BYTE_BUFFER_SIZE];
+//volatile unsigned char startReading 	= 0;
+static volatile unsigned char lastByte 		= 0;
+static volatile unsigned int receivedByteCount = 0;
+
+static unsigned int temp = 0;
+
 // ****************** Global variables ******************************************************
 UINT uiWorkFlowFlag = 0b00000000;
 T_TASK_FUNCTION apfTasks[MAX_NBR_OF_TASKS];
 
-// USART part
-volatile unsigned char dataReceived[RECEIVED_BYTE_BUFFER_SIZE];
-volatile unsigned char startReading 	= 0;
-volatile unsigned char lastByte 		= 0;
-volatile unsigned int receivedByteCount = 0;
+volatile SERVO_MANUAL_PARAMETERS g_stServoMenualParameters = {0.0, 0.0 ,0};
 
-volatile double dPeriod 			= 0.0;
-volatile double dHigh 				= 0.0;
-volatile unsigned int uiRepeater 	= 0.0;
-
-unsigned int temp = 0;
 // *****************************************************************************************
 
 INT main (void)
@@ -39,6 +40,7 @@ INT main (void)
 	vInitPipe();
 	
 	USART_Init ( 9600 );
+	vSetPendingTask(vServoL);
 
 	sei();
 	USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
@@ -98,7 +100,7 @@ ISR(USART_RXC_vect)
 
     		temp = dataReceived[3]*100 + dataReceived[4]*10 + dataReceived[5];
 
-    		dPeriod = ((double)temp)*0.1;
+    		g_stServoMenualParameters.dPeriod = ((double)temp)*0.1;
 
     		sprintf((char *)buffer, "%d ", temp);
     		USART_Transmit_string(buffer);
@@ -111,7 +113,7 @@ ISR(USART_RXC_vect)
     		dataReceived[9] -= '0';
 
     		temp = dataReceived[7]*100 + dataReceived[8]*10 + dataReceived[9];
-    		dHigh = ((double)temp)*0.1;
+    		g_stServoMenualParameters.dHigh = ((double)temp)*0.1;
 
     		sprintf((char *)buffer, "%d ", temp);
     		USART_Transmit_string(buffer);
@@ -123,9 +125,9 @@ ISR(USART_RXC_vect)
     		dataReceived[12] -= '0';
     		dataReceived[13] -= '0';
 
-    		uiRepeater = dataReceived[11]*100 + dataReceived[12]*10 + dataReceived[13];
+    		g_stServoMenualParameters.uiRepeater = dataReceived[11]*100 + dataReceived[12]*10 + dataReceived[13];
 
-    		sprintf((char *)buffer, "%d ", uiRepeater);
+    		sprintf((char *)buffer, "%d ", g_stServoMenualParameters.uiRepeater);
     		USART_Transmit_string(buffer);
 
     		// Send Acknowledge
@@ -147,7 +149,7 @@ ISR(USART_RXC_vect)
     		dataReceived[5] -= '0';
 
     		temp = dataReceived[3]*100 + dataReceived[4]*10 + dataReceived[5];
-    		dPeriod = ((double)temp)*0.1;
+    		g_stServoMenualParameters.dPeriod = ((double)temp)*0.1;
 
     		// HIGH state
     		dataReceived[7] -= '0';
@@ -155,14 +157,14 @@ ISR(USART_RXC_vect)
     		dataReceived[9] -= '0';
 
     		temp = dataReceived[7]*100 + dataReceived[8]*10 + dataReceived[9];
-    		dHigh = ((double)temp)*0.1;
+    		g_stServoMenualParameters.dHigh = ((double)temp)*0.1;
 
     		// REPEATER
     		dataReceived[11] -= '0';
     		dataReceived[12] -= '0';
     		dataReceived[13] -= '0';
 
-    		uiRepeater = dataReceived[11]*100 + dataReceived[12]*10 + dataReceived[13];
+    		g_stServoMenualParameters.uiRepeater = dataReceived[11]*100 + dataReceived[12]*10 + dataReceived[13];
 
     		// Send Acknowledge
     		USART_Transmit_string((unsigned char*)"*:ACK:#");
