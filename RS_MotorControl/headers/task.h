@@ -1,6 +1,8 @@
 #ifndef INCLUDE_TASK
 #define INCLUDE_TASK
 
+#include "global_types.h"
+
 #define MAX_NBR_OF_TASKS            20
 
 // ****************** WORKF FLOW FLAGS *************************************

@@ -1,4 +1,5 @@
 #include "headers/tasks_aux.h"
+#include "headers/global_types.h"
 
 void vSetServoManualParameters(double dPeriod, double dHigh, unsigned int uiRepeater)
 {
@@ -13,4 +14,14 @@ void vSetMotorManualParameters(UCHAR ucLeftMotorValocity, UCHAR ucRightMotorValo
     g_stMotorMenualParameters.ucRightMotorValocity  = ucRightMotorValocity;
     g_stMotorMenualParameters.ucLeftMotorDirection  = ucLeftMotorDirection;
     g_stMotorMenualParameters.ucRightMotorDirection = ucRightMotorDirection;
+}
+
+BOOL bIsManualParametersChanged(UCHAR ucNewLeftMotorValocity, UCHAR ucNewRightMotorValocity, UCHAR ucNewLeftMotorDirection, UCHAR ucNewRightMotorDirection)
+{
+    return (
+             g_stMotorMenualParameters.ucLeftMotorValocity   != ucNewLeftMotorValocity   ||
+             g_stMotorMenualParameters.ucRightMotorValocity  != ucNewRightMotorValocity  ||
+             g_stMotorMenualParameters.ucLeftMotorDirection  != ucNewLeftMotorDirection  ||
+             g_stMotorMenualParameters.ucRightMotorDirection != ucNewRightMotorDirection
+            );
 }

@@ -4,6 +4,8 @@
 #include "headers/tasks_aux.h"
 #include "headers/usart.h"
 #include "headers/protocol.h"
+#include "headers/timer.h"
+#include "headers/motor.h"
 
 
 // ****************** DEFINITION ***********************************************************
@@ -23,6 +25,7 @@ INT main (void)
     vInitPipe();
 
     USART_Init ( 9600 );
+    initTimer0();
 
     //
     vSetServoManualParameters(MOTOR_MIDDLE_POS_STOP);
@@ -44,5 +47,10 @@ INT main (void)
 ISR(USART_RXC_vect)
 {
 //    bHandleInput(bServoManualHandler, UDR);
-    bHandleInput(bMotorManualHandler, UDR);
+    BOOL bHandled = bHandleInput(bMotorManualHandler, UDR);
+
+    if(bHandled)
+    {
+        resetTimer0();
+    }
 }

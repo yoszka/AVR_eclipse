@@ -312,10 +312,12 @@ BOOL bMotorManualHandler(UCHAR ucInputByte)
             // Send Acknowledge
             USART_Transmit_string((unsigned char*)"*:ACK:#");
 
-            //
-            vSetMotorManualParameters(ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection);
-            // run motor task
-            vSetPendingTask(vMotorManual);
+            if(bIsManualParametersChanged(ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection))
+            {
+                vSetMotorManualParameters(ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection);
+                // run motor task
+                vSetPendingTask(vMotorManual);
+            }
 
             return TRUE;
         }

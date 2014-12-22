@@ -5,6 +5,7 @@
 
 void vSetServoManualParameters(double dPeriod, double dHigh, unsigned int uiRepeater);
 void vSetMotorManualParameters(UCHAR ucLeftMotorValocity, UCHAR ucRightMotorValocity, UCHAR ucLeftMotorDirection, UCHAR ucRightMotorDirection);
+BOOL bIsManualParametersChanged(UCHAR ucNewLeftMotorValocity, UCHAR ucNewRightMotorValocity, UCHAR ucNewLeftMotorDirection, UCHAR ucNewRightMotorDirection);
 
 typedef struct
 {
