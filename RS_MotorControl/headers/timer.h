@@ -8,6 +8,8 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
+#include <stdint.h>
+
 void initTimer0(void);
 void resetTimer0(void);
 void initTimer1A_CTC(void);

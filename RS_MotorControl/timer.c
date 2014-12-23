@@ -103,6 +103,9 @@ void vHandleLeftMotorSpeed() {
 ISR(TIMER1_COMPA_vect)
 {
     vHandleLeftMotorSpeed();
+    TIFR |= (1<<OCF1A);
+    TCNT1H = 0;
+    TCNT1L = 0;
 }
 
 //ISR(TIMER1_COMPB_vect)

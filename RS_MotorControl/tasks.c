@@ -114,7 +114,15 @@ void vLeftMotorManual(void)
 {
     if(g_stMotorMenualParameters.ucLeftMotorDirection == '+')
     {
-        setSoftPWMvalueTimer1(g_stMotorMenualParameters.ucLeftMotorValocity);
+        CHAR velocity = g_stMotorMenualParameters.ucLeftMotorValocity;
+
+        #define MAX_VELOCITY 240
+
+        if(g_stMotorMenualParameters.ucLeftMotorValocity > MAX_VELOCITY) {
+            velocity = MAX_VELOCITY;
+        }
+
+        setSoftPWMvalueTimer1(velocity);
     }
     else
     {
