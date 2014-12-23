@@ -202,7 +202,7 @@ Means: Go forward for 150/255 max velocity (left and right motors same velocity)
 */
 BOOL bMotorManualHandler(UCHAR ucInputByte)
 {
-    UCHAR ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection;
+    UCHAR ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection;
 
 #if DEBUG_OUTPUT
     unsigned char buffer[10] = {0};
@@ -307,16 +307,17 @@ BOOL bMotorManualHandler(UCHAR ucInputByte)
             aucDataReceived[11] -= '0';
             aucDataReceived[12] -= '0';
 
-            ucRightMotorValocity = aucDataReceived[10]*100 + aucDataReceived[11]*10 + aucDataReceived[12];
+            ucRightMotorVelocity = aucDataReceived[10]*100 + aucDataReceived[11]*10 + aucDataReceived[12];
 
             // Send Acknowledge
             USART_Transmit_string((unsigned char*)"*:ACK:#");
 
-            if(bIsManualParametersChanged(ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection))
+            if(bIsManualParametersChanged(ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection))
             {
-                vSetMotorManualParameters(ucLeftMotorValocity, ucRightMotorValocity, ucLeftMotorDirection, ucRightMotorDirection);
+                vSetMotorManualParameters(ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection);
                 // run motor task
-                vSetPendingTask(vMotorManual);
+//                vSetPendingTask(vMotorManualMockBServo);
+                vSetPendingTask(vLeftMotorManual);
             }
 
             return TRUE;

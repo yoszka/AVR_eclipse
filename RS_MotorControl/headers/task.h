@@ -34,7 +34,8 @@ void vServoP        (void);
 void vServoS        (void);
 void vServoL        (void);
 void vServoManual   (void);
-void vMotorManual   (void);
+void vMotorManualMockBServo   (void);
+void vLeftMotorManual(void);
 
 // ******************** External definition ********************************
 extern T_TASK_FUNCTION  apfTasks[];

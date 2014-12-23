@@ -3,6 +3,7 @@
 #include "headers/tasks_aux.h"
 #include <util/delay.h>
 #include "headers/hardware.h"
+#include "headers/timer.h"
 
 /**
  * Delay 1s
@@ -81,7 +82,7 @@ void vServoManual(void){
     }
 }
 
-void vMotorManual(void)
+void vMotorManualMockBServo(void)
 {
     #define DEFAULT_REPEATER    50
     #define DEFAULT_PERIOD      20.0
@@ -107,4 +108,16 @@ void vMotorManual(void)
 
     vSetServoManualParameters(DEFAULT_PERIOD, dHigh, DEFAULT_REPEATER);
     vServoManual();
+}
+
+void vLeftMotorManual(void)
+{
+    if(g_stMotorMenualParameters.ucLeftMotorDirection == '+')
+    {
+        setSoftPWMvalueTimer1(g_stMotorMenualParameters.ucLeftMotorValocity);
+    }
+    else
+    {
+        setSoftPWMvalueTimer1(0);
+    }
 }

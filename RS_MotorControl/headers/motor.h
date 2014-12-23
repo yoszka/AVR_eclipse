@@ -13,6 +13,6 @@
 
 // ****************** Declarations *********************************************************
 
-void vMotorStop(void);
+void vLeftMotorStop(void);
 
 #endif // MOTOR_H_

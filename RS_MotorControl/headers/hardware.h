@@ -27,5 +27,9 @@
 
 #define LED_3_ON		 {LED_3_DDR |=  _BV(LED_3_PIN);  LED_3_PORT &= ~_BV(LED_3_PIN);}		// NEGATIVE POLARISATION
 #define LED_3_OFF		 {LED_3_DDR &= ~_BV(LED_3_PIN);  LED_3_PORT |=  _BV(LED_3_PIN);}		// NEGATIVE POLARISATION
+#define LED_3_TOGGLE     {LED_3_DDR |=  _BV(LED_3_PIN);  LED_3_PORT ^=  _BV(LED_3_PIN);}        // NEGATIVE POLARISATION
+
+#define MOTO_L_OFF        LED_3_ON
+#define MOTO_L_ON         LED_3_OFF
 
 #endif // INCLUDE_HARDWARE

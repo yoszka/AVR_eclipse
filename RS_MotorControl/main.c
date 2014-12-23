@@ -26,6 +26,8 @@ INT main (void)
 
     USART_Init ( 9600 );
     initTimer0();
+    setSoftPWMvalueTimer1(0);
+    initTimer1A_CTC();
 
     //
     vSetServoManualParameters(MOTOR_MIDDLE_POS_STOP);
