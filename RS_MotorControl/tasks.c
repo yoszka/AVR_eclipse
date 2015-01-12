@@ -5,6 +5,8 @@
 #include "headers/hardware.h"
 #include "headers/timer.h"
 
+#define MAX_VELOCITY 240
+
 /**
  * Delay 1s
  */
@@ -94,7 +96,7 @@ void vMotorManualMockBServo(void)
 //    g_stMotorMenualParameters.ucLeftMotorDirection
 //    g_stMotorMenualParameters.ucRightMotorDirection   // not used now
 
-    double dVelocityAbs = ((double)g_stMotorMenualParameters.ucLeftMotorValocity / 255.0) * 0.9;
+    double dVelocityAbs = ((double)g_stMotorMenualParameters.ucLeftMotorVelocity / 255.0) * 0.9;
 
     if(g_stMotorMenualParameters.ucLeftMotorDirection == '+')
     {
@@ -110,22 +112,33 @@ void vMotorManualMockBServo(void)
     vServoManual();
 }
 
-void vLeftMotorManual(void)
+void vMotorManual(void)
 {
+    UCHAR ucVelocity = 0;
+
+    // LEFT motor
     if(g_stMotorMenualParameters.ucLeftMotorDirection == '+')
     {
-        CHAR velocity = g_stMotorMenualParameters.ucLeftMotorValocity;
+        ucVelocity = g_stMotorMenualParameters.ucLeftMotorVelocity;
 
-        #define MAX_VELOCITY 240
-
-        if(g_stMotorMenualParameters.ucLeftMotorValocity > MAX_VELOCITY) {
-            velocity = MAX_VELOCITY;
+        if(ucVelocity > MAX_VELOCITY) {
+            ucVelocity = MAX_VELOCITY;
         }
+    }
 
-        setSoftPWMvalueTimer1(velocity);
-    }
-    else
+    setSoftPWMvalueTimer1(ucVelocity);
+
+    // RIGHT motor
+    ucVelocity = 0;
+
+    if(g_stMotorMenualParameters.ucRightMotorDirection == '+')
     {
-        setSoftPWMvalueTimer1(0);
+        ucVelocity = g_stMotorMenualParameters.ucRightMotorVelocity;
+
+        if(ucVelocity > MAX_VELOCITY) {
+            ucVelocity = MAX_VELOCITY;
+        }
     }
+
+    setSoftPWMvalueTimer2(ucVelocity);
 }

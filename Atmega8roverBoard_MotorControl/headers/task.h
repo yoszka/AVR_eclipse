@@ -24,18 +24,9 @@ BOOL             vSetPendingTask (T_TASK_FUNCTION task);
 
 // tasks
 void vDelay1s       (void);
-void vTurnOnLed1    (void);
-void vTurnOnLed2    (void);
-void vTurnOnLed3    (void);
-void vTurnOffLed1   (void);
-void vTurnOffLed2   (void);
-void vTurnOffLed3   (void);
-void vServoP        (void);
-void vServoS        (void);
-void vServoL        (void);
-void vServoManual   (void);
-void vMotorManualMockBServo   (void);
-void vMotorManual(void);
+void vTurnOnLed     (void);
+void vTurnOffLed    (void);
+void vMotorManual   (void);
 
 // ******************** External definition ********************************
 extern T_TASK_FUNCTION  apfTasks[];

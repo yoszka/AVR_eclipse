@@ -32,4 +32,7 @@
 #define MOTO_L_OFF        LED_3_ON
 #define MOTO_L_ON         LED_3_OFF
 
+#define MOTO_R_OFF        LED_2_ON
+#define MOTO_R_ON         LED_2_OFF
+
 #endif // INCLUDE_HARDWARE

@@ -7,6 +7,9 @@
 #include "headers/timer.h"
 #include "headers/motor.h"
 
+//#include "headers/hardware.h"
+//#include <util/delay.h>
+
 
 // ****************** DEFINITION ***********************************************************
 #define MOTOR_MIDDLE_POS_STOP       20.0, 1.0, 100
@@ -20,23 +23,34 @@ volatile ST_MOTOR_MANUAL_PARAMETERS g_stMotorMenualParameters = {0, 0, 0, 0};
 
 // *****************************************************************************************
 
+//#error "Not ready!!"
 INT main (void)
 {
     vInitPipe();
 
-//    USART_Init ( 9600 );
-//    initTimer0();
-//    setSoftPWMvalueTimer1(0);
-//    setSoftPWMvalueTimer2(0);
-//    initTimerMotorTimers();
+//    MOTOR_1_DIR_LEFT
+//    MOTOR_1_ENA_HI
+//    MOTOR_2_DIR_LEFT
+//    MOTOR_2_ENA_HI
 //
-//    //
+//
+//    _delay_ms(1000);
+//    MOTOR_1_ENA_LOW
+//    MOTOR_2_ENA_LOW
+
+    USART_Init ( 9600 );
+    initTimer0();
+    setSoftPWMvalueTimer1(0);
+    setSoftPWMvalueTimer2(0);
+    initTimerMotorTimers();
+
+    //
 //    vSetServoManualParameters(MOTOR_MIDDLE_POS_STOP);
 //    // run motor task
 //    vSetPendingTask(vServoManual);
-//
-//    sei();
-//    USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
+
+    sei();
+    //USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
 
     while(TRUE)
     {

@@ -13,9 +13,18 @@
 
 void vLeftMotorStop(void)
 {
-    if(g_stMotorMenualParameters.ucLeftMotorValocity  != 0)// if not already stopped (in middle position)
+    if(g_stMotorMenualParameters.ucLeftMotorVelocity  != 0)// if not already stopped (in middle position)
     {
         vSetMotorManualParameters(0, 0, '+', '+');
         setSoftPWMvalueTimer1(0);
+    }
+}
+
+void vRightMotorStop(void)
+{
+    if(g_stMotorMenualParameters.ucRightMotorVelocity  != 0)// if not already stopped (in middle position)
+    {
+        vSetMotorManualParameters(0, 0, '+', '+');
+        setSoftPWMvalueTimer2(0);
     }
 }

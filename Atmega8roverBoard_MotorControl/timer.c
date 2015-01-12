@@ -37,9 +37,10 @@ ISR(TIMER0_OVF_vect)
     {
         uiSoftCounterTimer0 = 0;
         // 1 second
-//        LED_2_TOGGLE
+        LED_TOGGLE
 
         vLeftMotorStop();
+        vRightMotorStop();
     }
 }
 
@@ -98,12 +99,12 @@ void vHandleLeftMotorSpeed() {
     const uint16_t uiTimer1A_CTC_value = getTimer1A_CTC_value();
 
     if ((uint8_t) uiTimer1A_CTC_value == g_ucSoftPWMTimer1Hign) {
-        MOTO_L_OFF
+        MOTOR_1_ENA_LOW
         setTimer1A_CTC_value(g_ucSoftPWMTimer1Low);
     } else if(0 == g_ucSoftPWMTimer1Hign){
-        MOTO_L_OFF;
+        MOTOR_1_ENA_LOW;
     } else {
-        MOTO_L_ON
+        MOTOR_1_ENA_HI
         setTimer1A_CTC_value(g_ucSoftPWMTimer1Hign);
     }
 }
@@ -133,12 +134,12 @@ void vHandleRightMotorSpeed() {
     const uint8_t ucTimer2_CTC_value = getTimer2_CTC_value();
 
     if ((uint8_t) ucTimer2_CTC_value == g_ucSoftPWMTimer2High) {
-        MOTO_R_OFF
+        MOTOR_2_ENA_LOW
         setTimer2_CTC_value(g_ucSoftPWMTimer2Low);
     } else if(0 == g_ucSoftPWMTimer2High){
-        MOTO_R_OFF;
+        MOTOR_2_ENA_LOW;
     } else {
-        MOTO_R_ON
+        MOTOR_2_ENA_HI
         setTimer2_CTC_value(g_ucSoftPWMTimer2High);
     }
 }
