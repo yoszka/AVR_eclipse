@@ -23,10 +23,13 @@ T_TASK_FUNCTION  vGetPendingTask (void);
 BOOL             vSetPendingTask (T_TASK_FUNCTION task);
 
 // tasks
-void vDelay1s       (void);
-void vTurnOnLed     (void);
-void vTurnOffLed    (void);
-void vMotorManual   (void);
+void vDelay1s         (void);
+void vTurnOnLed       (void);
+void vTurnOffLed      (void);
+void vMotorManual     (void);
+void vInfSysCmdReady  (void);
+void vAdcReady        (void);
+void vSysCmdMeasureAdc(void);
 
 // ******************** External definition ********************************
 extern T_TASK_FUNCTION  apfTasks[];

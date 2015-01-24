@@ -26,5 +26,6 @@ ST_MOTOR_MANUAL_PARAMETERS;
 
 extern volatile ST_SERVO_MANUAL_PARAMETERS g_stServoMenualParameters;
 extern volatile ST_MOTOR_MANUAL_PARAMETERS g_stMotorMenualParameters;
+extern volatile UCHAR g_ucAdcValue;
 
 #endif // TASKS_AUX_H

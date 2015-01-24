@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../adc.c \
 ../main.c \
 ../motor.c \
 ../protocol.c \
@@ -11,9 +12,11 @@ C_SRCS += \
 ../tasks.c \
 ../tasks_aux.c \
 ../timer.c \
-../usart.c 
+../usart.c \
+../util.c 
 
 OBJS += \
+./adc.o \
 ./main.o \
 ./motor.o \
 ./protocol.o \
@@ -21,9 +24,11 @@ OBJS += \
 ./tasks.o \
 ./tasks_aux.o \
 ./timer.o \
-./usart.o 
+./usart.o \
+./util.o 
 
 C_DEPS += \
+./adc.d \
 ./main.d \
 ./motor.d \
 ./protocol.d \
@@ -31,7 +36,8 @@ C_DEPS += \
 ./tasks.d \
 ./tasks_aux.d \
 ./timer.d \
-./usart.d 
+./usart.d \
+./util.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

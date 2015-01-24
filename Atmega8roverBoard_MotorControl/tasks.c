@@ -4,6 +4,8 @@
 #include <util/delay.h>
 #include "headers/hardware.h"
 #include "headers/timer.h"
+#include "headers/adc.h"
+#include "headers/usart.h"
 
 #define MAX_VELOCITY 240
 
@@ -66,4 +68,26 @@ void vMotorManual(void)
     }
 
     setSoftPWMvalueTimer2(ucVelocity);
+}
+
+void vInfSysCmdReady(void)
+{
+    USART_Transmit_string((unsigned char*)"*:SC READY:#");
+}
+
+void vAdcReady(void)
+{
+//    unsigned char aucToSend[] = "*:ACK&ADC&J:#";
+//    aucToSend[10] = g_ucAdcValue;
+    unsigned char aucToSend[] = "*:ACK&ADC&000:#";
+    aucToSend[10] = '0' + g_ucAdcValue/100;
+    aucToSend[11] = '0' + (g_ucAdcValue%100)/10;
+    aucToSend[12] = '0' + (g_ucAdcValue%10);
+    USART_Transmit_string((unsigned char*)aucToSend);
+}
+
+void vSysCmdMeasureAdc(void)
+{
+    ADC_Enable();
+    ADC_Start();
 }

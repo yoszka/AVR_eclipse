@@ -6,6 +6,7 @@
 #include "headers/usart.h"
 #include "headers/task.h"
 #include "headers/tasks_aux.h"
+#include "headers/util.h"
 
 // ****************** DEFINITION ***********************************************************
 #define RECEIVED_BYTE_BUFFER_SIZE       (32)
@@ -49,6 +50,24 @@ Example
 Means: Go forward for 150/255 max velocity (left and right motors same velocity)
 
 */
+
+/**
+ * Handler for external system commands
+ */
+
+/*
+PROTOCOL:
+Start Frame - *:
+SC          - protocol function "S"
+xxx         - system command 0-255
+End frame   - :#
+
+*:SCxxx:#
+
+Example
+*:SC001:#
+
+*/
 BOOL bMotorManualHandler(UCHAR ucInputByte)
 {
     UCHAR ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection;
@@ -80,6 +99,28 @@ BOOL bMotorManualHandler(UCHAR ucInputByte)
             USART_Transmit_string((unsigned char*)"*:SERVO_READY:#");
             ucLastByte = ucInputByte;
             LED_ON
+            return TRUE;
+        }
+
+        if((aucDataReceived[2] == 'S') &&
+           (aucDataReceived[3] == 'C'))
+        {
+            unsigned char ucSysCmd = ucGetThreeDigitValue((unsigned char *)&(aucDataReceived[4]));
+
+            switch(ucSysCmd)
+            {
+                case 1:
+                    vSetPendingTask(vInfSysCmdReady);
+                    break;
+
+                case 2:
+                    vSetPendingTask(vSysCmdMeasureAdc);
+                    break;
+
+                default:
+                    break;
+            }
+
             return TRUE;
         }
 
@@ -141,22 +182,14 @@ BOOL bMotorManualHandler(UCHAR ucInputByte)
             ucLeftMotorDirection = aucDataReceived[4];
 
             // VELOCITY
-            aucDataReceived[5] -= '0';
-            aucDataReceived[6] -= '0';
-            aucDataReceived[7] -= '0';
-
-            ucLeftMotorValocity = aucDataReceived[5]*100 + aucDataReceived[6]*10 + aucDataReceived[7];
+            ucLeftMotorValocity = ucGetThreeDigitValue((unsigned char *)&(aucDataReceived[5]));
 
             // RIGHT MOTOR ------------------------
             // DIRECTION
             ucRightMotorDirection = aucDataReceived[9];
 
             // VELOCITY
-            aucDataReceived[10] -= '0';
-            aucDataReceived[11] -= '0';
-            aucDataReceived[12] -= '0';
-
-            ucRightMotorVelocity = aucDataReceived[10]*100 + aucDataReceived[11]*10 + aucDataReceived[12];
+            ucRightMotorVelocity = ucGetThreeDigitValue((unsigned char *)&(aucDataReceived[10]));
 
             // Send Acknowledge
             USART_Transmit_string((unsigned char*)"*:ACK:#");
@@ -164,9 +197,6 @@ BOOL bMotorManualHandler(UCHAR ucInputByte)
             if(bIsManualParametersChanged(ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection))
             {
                 vSetMotorManualParameters(ucLeftMotorValocity, ucRightMotorVelocity, ucLeftMotorDirection, ucRightMotorDirection);
-//                vSetMotorManualParameters(ucRightMotorVelocity, ucLeftMotorValocity, ucRightMotorDirection, ucLeftMotorDirection);
-                // run motor task
-//                vSetPendingTask(vMotorManualMockBServo);
                 vSetPendingTask(vMotorManual);
             }
 
