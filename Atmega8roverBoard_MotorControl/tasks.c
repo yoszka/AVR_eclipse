@@ -1,3 +1,9 @@
+/*
+ * tasks.c
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #include "headers/global_types.h"
 #include "headers/task.h"
 #include "headers/tasks_aux.h"
@@ -13,7 +19,7 @@
  * Delay 1s
  */
 void vDelay1s(void){
-    for(int i = 0; i < 100; i++){
+    for(UCHAR i = 0; i < 100; i++){
         _delay_ms(10);
     }
 }
@@ -72,18 +78,16 @@ void vMotorManual(void)
 
 void vInfSysCmdReady(void)
 {
-    USART_Transmit_string((unsigned char*)"*:SC READY:#");
+    USART_Transmit_string((UCHAR*)"*:SC READY:#");
 }
 
 void vAdcReady(void)
 {
-//    unsigned char aucToSend[] = "*:ACK&ADC&J:#";
-//    aucToSend[10] = g_ucAdcValue;
-    unsigned char aucToSend[] = "*:ACK&ADC&000:#";
+    UCHAR aucToSend[] = "*:ACK&ADC&000:#";
     aucToSend[10] = '0' + g_ucAdcValue/100;
     aucToSend[11] = '0' + (g_ucAdcValue%100)/10;
     aucToSend[12] = '0' + (g_ucAdcValue%10);
-    USART_Transmit_string((unsigned char*)aucToSend);
+    USART_Transmit_string((UCHAR*)aucToSend);
 }
 
 void vSysCmdMeasureAdc(void)

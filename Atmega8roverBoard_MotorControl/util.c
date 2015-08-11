@@ -5,10 +5,12 @@
  *      Author: Tomasz Jokiel
  */
 
+#include "headers/global_types.h"
+
 /**
  * Side effect - memory from pointer will be destroyed
  */
-unsigned char ucGetThreeDigitValue(unsigned char * pBeginingMemoryToParse)
+UCHAR ucGetThreeDigitValue(UCHAR * pBeginingMemoryToParse)
 {
     pBeginingMemoryToParse[0] -= '0';
     pBeginingMemoryToParse[1] -= '0';

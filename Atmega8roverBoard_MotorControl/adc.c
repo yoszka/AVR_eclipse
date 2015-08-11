@@ -6,6 +6,7 @@
  */
 #include <avr/io.h>
 #include "headers/adc.h"
+#include "headers/global_types.h"
 
 void ADC_Init()
 {
@@ -38,7 +39,7 @@ void ADC_Stop()
     ADCSRA &= ~(1 << ADSC);
 }
 
-unsigned char ADC_get8bitValue()
+UCHAR ADC_get8bitValue()
 {
     return ADCH;
 }

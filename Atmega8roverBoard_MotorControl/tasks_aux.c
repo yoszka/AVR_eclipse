@@ -1,7 +1,13 @@
+/*
+ * taska_aux.c
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #include "headers/tasks_aux.h"
 #include "headers/global_types.h"
 
-void vSetServoManualParameters(double dPeriod, double dHigh, unsigned int uiRepeater)
+void vSetServoManualParameters(DOUBLE dPeriod, DOUBLE dHigh, UINT uiRepeater)
 {
     g_stServoMenualParameters.dPeriod    = dPeriod;
     g_stServoMenualParameters.dHigh      = dHigh;

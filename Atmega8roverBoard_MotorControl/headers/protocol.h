@@ -1,3 +1,9 @@
+/*
+ * protocol.h
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 

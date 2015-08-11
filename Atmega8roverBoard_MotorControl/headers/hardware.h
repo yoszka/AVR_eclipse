@@ -1,3 +1,9 @@
+/*
+ * hardware.h
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #ifndef INCLUDE_HARDWARE
 #define INCLUDE_HARDWARE
 

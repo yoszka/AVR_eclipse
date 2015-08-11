@@ -8,12 +8,9 @@
 #ifndef USART_H_
 #define USART_H_
 
-//#define BAUD 	9600
-//#define MYUBRR 	F_CPU/16/BAUD-1
-
-void USART_Init( unsigned int baud );
-void USART_Transmit( unsigned char data );
-unsigned char USART_Receive( void );
-void USART_Transmit_string( unsigned char* string );
+void USART_Init( UINT baud );
+void USART_Transmit( UCHAR data );
+UCHAR USART_Receive( void );
+void USART_Transmit_string( UCHAR* string );
 
 #endif /* USART_H_ */

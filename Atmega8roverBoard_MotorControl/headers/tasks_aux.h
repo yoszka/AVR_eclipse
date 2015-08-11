@@ -1,17 +1,23 @@
+/*
+ * tasks_aux.h
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #ifndef TASKS_AUX_H
 #define TASKS_AUX_H
 
 #include "global_types.h"
 
-void vSetServoManualParameters(double dPeriod, double dHigh, unsigned int uiRepeater);
+void vSetServoManualParameters(DOUBLE dPeriod, DOUBLE dHigh, UINT uiRepeater);
 void vSetMotorManualParameters(UCHAR ucLeftMotorValocity, UCHAR ucRightMotorValocity, UCHAR ucLeftMotorDirection, UCHAR ucRightMotorDirection);
 BOOL bIsManualParametersChanged(UCHAR ucNewLeftMotorValocity, UCHAR ucNewRightMotorValocity, UCHAR ucNewLeftMotorDirection, UCHAR ucNewRightMotorDirection);
 
 typedef struct
 {
-    double dPeriod;
-    double dHigh;
-    unsigned int uiRepeater;
+    DOUBLE dPeriod;
+    DOUBLE dHigh;
+    UINT uiRepeater;
 }
 ST_SERVO_MANUAL_PARAMETERS;
 

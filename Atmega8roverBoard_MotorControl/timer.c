@@ -1,3 +1,9 @@
+/*
+ * timer.c
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "headers/global_types.h"

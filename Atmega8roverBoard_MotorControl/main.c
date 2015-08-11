@@ -1,3 +1,9 @@
+/*
+ * main.c
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #include <avr/interrupt.h>
 #include "headers/global_types.h"
 #include "headers/task.h"
@@ -7,9 +13,6 @@
 #include "headers/timer.h"
 #include "headers/motor.h"
 #include "headers/adc.h"
-
-//#include "headers/hardware.h"
-//#include <util/delay.h>
 
 
 // ****************** DEFINITION ***********************************************************
@@ -37,7 +40,7 @@ INT main (void)
     initTimerMotorTimers();
 
     sei();
-    USART_Transmit_string((unsigned char*)"*:rOvEr RADY:#");
+    USART_Transmit_string((UCHAR*)"*:rOvEr RADY:#");
 
     while(TRUE)
     {

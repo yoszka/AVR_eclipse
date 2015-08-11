@@ -4,6 +4,7 @@
  *  Created on: 04-12-2012
  *      Author: Tomasz Jokiel
  */
+
 #include <avr/io.h>
 #include "headers/global_types.h"
 
@@ -11,11 +12,11 @@
 /**
  * Initialize USART
  */
-void USART_Init( unsigned int baud )
+void USART_Init( UINT baud )
 {
     /* Set baud rate */
     UBRRH = (F_CPU/(baud*16L)-1) >> 8;                                             // Calculate register content to gain proper transmission speed
-    UBRRL = (unsigned char)(F_CPU/(baud*16L)-1);
+    UBRRL = (UCHAR)(F_CPU/(baud*16L)-1);
     /* Enable Interrupts on receive, Enable Receiver and Transmitter */
     UCSRB = (1<<RXCIE)|(1<<RXEN)|(1<<TXEN);
     /* Set frame format: 8data, 1stop bit */
@@ -25,7 +26,7 @@ void USART_Init( unsigned int baud )
 /**
  * Transmit single byte
  */
-void USART_Transmit( unsigned char data )
+void USART_Transmit( UCHAR data )
 {
     /* Wait for empty transmit buffer */
     while ( !( UCSRA & (1<<UDRE)) );
@@ -36,7 +37,7 @@ void USART_Transmit( unsigned char data )
 /**
  * Receive single byte
  */
-unsigned char USART_Receive( void )
+UCHAR USART_Receive( void )
 {
     /* Wait for data to be received */
     while ( !(UCSRA & (1<<RXC)) );
@@ -49,7 +50,7 @@ unsigned char USART_Receive( void )
  * Transmit string
  * Precondition: String have to be zero terminated
  */
-void USART_Transmit_string( unsigned char* string )
+void USART_Transmit_string( UCHAR* string )
 {
     while(*string)
     {

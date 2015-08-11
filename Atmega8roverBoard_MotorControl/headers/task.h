@@ -1,3 +1,9 @@
+/*
+ * task.h
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #ifndef INCLUDE_TASK
 #define INCLUDE_TASK
 

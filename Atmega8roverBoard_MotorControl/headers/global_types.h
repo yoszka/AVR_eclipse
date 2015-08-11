@@ -1,18 +1,23 @@
+/*
+ * global_types.h
+ *
+ *      Author: Tomasz Jokiel
+ */
+
 #ifndef GLOBAL_TYPES
 #define GLOBAL_TYPES
 
 // Definition of the types ***************************************
 
-#define TRUE			(!0)
-#define FALSE			(0)
+#define TRUE            (!0)
+#define FALSE           (0)
 
-//#define NULL					((void*)0)
-
-typedef int            			INT;
-typedef unsigned int   			UINT;
-typedef char           			CHAR;
-typedef unsigned char  			UCHAR;
-typedef unsigned char  			BOOL;
+typedef int                     INT;
+typedef unsigned int            UINT;
+typedef char                    CHAR;
+typedef unsigned char           UCHAR;
+typedef unsigned char           BOOL;
+typedef double                  DOUBLE;
 
 typedef volatile int            VINT;
 typedef volatile unsigned int   VUINT;

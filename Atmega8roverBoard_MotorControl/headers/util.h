@@ -8,6 +8,6 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-unsigned char ucGetThreeDigitValue(unsigned char * pBeginingMemoryToParse);
+UCHAR ucGetThreeDigitValue(UCHAR * pBeginingMemoryToParse);
 
 #endif /* UTIL_H_ */
